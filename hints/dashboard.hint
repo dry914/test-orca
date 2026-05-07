@@ -1,0 +1,6 @@
+# Shares argument of `burnShares` is declared as a uint256 but is expected to be a uint128.
+# This hint reduces the shares argument to fit into a uint128.
+vars: Dashboard d
+hints: finished(d.burnShares(shares),
+    shares := shares % 340282366920938463463374607431768211455
+)
