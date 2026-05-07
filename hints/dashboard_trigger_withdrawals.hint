@@ -1,0 +1,6 @@
+# Validator public keys are expected to be a multiple of 48 bytes.
+# This hint ensures exactly one valid public key is generated.
+vars: Dashboard d
+hints: finished(d.triggerValidatorWithdrawals(pubkeys, amountsInGwei, refundRecipient),
+    pubkeys := rand_bytes(48)
+)

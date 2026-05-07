@@ -1,0 +1,52 @@
+# Various functions in the VaultHub require vault addresses as arguments.
+# This hint restricts vault addresses to the known vaults we are fuzzing.
+# It also includes a hint for restricting the pubkeys
+# argument of `forceValidatorExit` to a valid 48-byte public key.
+vars: VaultHub vh
+hints: finished(vh.forceRebalance(vault),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")])) ;
+
+finished(vh.settleLidoFees(vault),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")])) ;
+
+finished(vh.disconnect(vault),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")])) ;
+
+finished(vh.forceValidatorExit(vault, pubkeys, refundRecipient),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")]) ;
+    pubkeys := rand_bytes(48)
+ ) ;
+
+finished(vh.internalizeBadDebt(vault, shares),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")])) ;
+
+finished(vh.setLiabilitySharesTarget(vault, targetShares),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")])) ;
+
+finished(vh.socializeBadDebt(badDebtVault, acceptorVault, sharesToSocialize),
+    badDebtVault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                                address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                                address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                                address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")]);
+    acceptorVault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                                  address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                                  address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                                  address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")]))

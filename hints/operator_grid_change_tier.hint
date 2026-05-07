@@ -1,0 +1,10 @@
+# Enables correctly calling `changeTier` by restricting tier IDs to known valid tiers
+# (including a few extra) and setting the vault address to the known vaults we are fuzzing.
+vars: OperatorGrid og
+hints: finished(og.changeTier(vault, tierID, shareLimit),
+    vault := choose_rand([address("0x6d41b27087bba7aa9df685866f834af91fad1472"),
+                          address("0x750b07d95802bb81be1a09b002410212ee45c560"),
+                          address("0x2814c751847730433c13f74de1e234f8d230853e"),
+                          address("0x62e0d92cf7b8752b5292b9bcbbace4cfa1633428")]);
+    tierID := rand_int(1, 165)
+)

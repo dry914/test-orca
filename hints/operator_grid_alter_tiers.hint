@@ -1,0 +1,14 @@
+# Enables correctly calling `alterTiers` by restricting tier IDs to known valid tiers
+# (including a few extra) and setting tier parameters within expected bounds.
+vars: OperatorGrid og
+hints: finished(og.alterTiers(tierIDs, tierParams),
+    tierIDs := [rand_int(0,165)] ;
+    tierParams := [(
+        tierParams[0][0] , # tierID stays the same
+        rand_int(1000, 2000), # reserve ratio BP between 10.00% and 20.00%
+        rand_int(1, 900), # force balance ratio BP between 0.01% and 9.00%
+        rand_int(1, 65536), # infra BP between ~0.0001% and 100%
+        rand_int(1, 65536), # liquidity fee BP between ~0.0001% and 100%
+        rand_int(1, 65536) # reservation fee BP between ~0.0001% and 100%
+    )]
+)
