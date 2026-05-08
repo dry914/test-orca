@@ -1,8 +1,0 @@
-# Current valid tiers seem to cap out at around 160 based on recent transactions.
-# This hint restricts the tierID argument to be within the valid range of tiers,
-# with some extra inclusive tiers to enable fuzzing of invalid tier IDs and to accomodate
-# potential future tiers.
-vars: Dashboard d
-hints: finished(d.changeTier(tierID, shareLimit),
-    tierID := rand_int(0, 165)
-)
