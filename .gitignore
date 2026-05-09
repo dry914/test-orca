@@ -3,5 +3,8 @@ out/
 cache/
 broadcast/
 
+# Secrets / local-only
+.env
+
 # macOS
 .DS_Store

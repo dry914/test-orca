@@ -1,0 +1,9 @@
+{
+  "version": "1.0",
+  "type": "orca_fuzzing_targets",
+  "targets": [
+    "Lido",
+    "WithdrawalQueueERC721",
+    "OracleReportRunner"
+  ]
+}
