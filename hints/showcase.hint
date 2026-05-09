@@ -1,23 +1,20 @@
 # Showcase fuzzing surface (paired with specs/spec_01..03.spec).
 #
-# `oracle_addr` resolves to the on-chain AccountingOracle proxy
-# (0x852deD011285fe67063a08005c71a85690503Cee on mainnet — the address Lido
-# v3 pins as the only legitimate caller of Accounting.handleOracleReport).
-# That account is impersonated in script/OrCa.s.sol via anvil_impersonateAccount.
+# `oracle_addr` is bound to the AccountingOracle proxy
+# (0x852dEd011285fe67063a08005c71a85690503Cee). After setup that address holds
+# OracleReportRunner's runtime bytecode (anvil_setCode), so calling
+# `oracleRunner.report(...)` from `oracle_addr` itself satisfies the
+# `msg.sender == accountingOracle` access check inside Accounting.
 #
-# Note re: PDF — the showcase PDF wrote `lido.handleOracleReport(...)` with a
-# flat parameter list. In Lido v3 the function lives on Accounting and takes a
-# single ReportValues tuple. The hint mirrors the real ABI.
-#
-# Open question still applies: `simulatedShareRate` must agree with what the
-# protocol computes from `clBalance` and other report fields, otherwise
-# OracleReportSanityChecker reverts and finalize coverage degrades to ~0
-# silently. Replace the placeholder below with a `solve` block / helper as
-# soon as the right derivation is confirmed with Veridise.
+# OracleReportRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint)
+# clamps every input to ranges the OracleReportSanityChecker accepts and pulls
+# the rest of the report fields (timestamp, validators, vault balances, batches,
+# simulatedShareRate) from live state — so any hint values land on a
+# non-reverting code path while still letting share rate move between calls.
 
 vars: Lido lido,
-      Accounting accounting,
       WithdrawalQueueERC721 wq,
+      OracleReportRunner oracleRunner,
       address user1, address user2,
       address attacker,
       address oracle_addr
@@ -35,19 +32,11 @@ hints:
         _amounts := [rand_int(100, 1000000000000000000000)]
     ) ;
 
-    finished(accounting.handleOracleReport(_report),
-        sender  := oracle_addr;
-        _report := (
-            block.timestamp,                        # timestamp
-            86400,                                  # timeElapsed
-            rand_int(1, 1000),                      # clValidators
-            rand_int(0, 32000000000000000000000),   # clBalance, 0..32_000 ETH
-            0,                                      # withdrawalVaultBalance
-            0,                                      # elRewardsVaultBalance
-            0,                                      # sharesRequestedToBurn
-            [rand_int(1, 100)],                     # withdrawalFinalizationBatches
-            1000000000000000000                     # simulatedShareRate (PLACEHOLDER, see header)
-        )
+    finished(oracleRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint),
+        sender                       := oracle_addr;
+        timeElapsedHint              := rand_int(3600, 604800);                    # 1h .. 7d
+        clBalanceIncreaseHint        := rand_int(0, 1000000000000000000000000);    # 0 .. 1M ETH (clamped inside helper)
+        sharesRequestedToBurnHint    := 0
     ) ;
 
     finished(wq.claimWithdrawal(_requestId),

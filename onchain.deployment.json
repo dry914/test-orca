@@ -4788,6 +4788,47 @@
           "type": "function"
         }
       ]
+    },
+    "0x852deD011285fe67063a08005c71a85690503Cee": {
+      "name": "OracleReportRunner",
+      "abi": [
+        {
+          "type": "function",
+          "name": "getLastProcessingRefSlot",
+          "inputs": [],
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ],
+          "stateMutability": "view"
+        },
+        {
+          "type": "function",
+          "name": "report",
+          "inputs": [
+            {
+              "name": "timeElapsedHint",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "clBalanceIncreaseHint",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "sharesRequestedToBurnHint",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ],
+          "outputs": [],
+          "stateMutability": "nonpayable"
+        }
+      ]
     }
   }
 }

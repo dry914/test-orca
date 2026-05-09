@@ -6,8 +6,8 @@
 
   "fuzzing_targets": [
     "Lido",
-    "Accounting",
-    "WithdrawalQueueERC721"
+    "WithdrawalQueueERC721",
+    "OracleReportRunner"
   ],
 
   "fuzzing_blacklist": [
@@ -38,8 +38,11 @@
     "Lido.handleOracleReport",
     "Lido.processClStateUpdate",
     "Lido.collectRewardsAndProcessWithdrawals",
+    "Lido.internalizeExternalBadDebt",
+    "Lido.emitTokenRebase",
 
     "Accounting.simulateOracleReport",
+    "Accounting.handleOracleReport",
 
     "WithdrawalQueueERC721.initialize",
     "WithdrawalQueueERC721.resume",
@@ -48,6 +51,7 @@
     "WithdrawalQueueERC721.finalize",
     "WithdrawalQueueERC721.prefinalize",
     "WithdrawalQueueERC721.onOracleReport",
+    "WithdrawalQueueERC721.calculateFinalizationBatches",
     "WithdrawalQueueERC721.grantRole",
     "WithdrawalQueueERC721.revokeRole",
     "WithdrawalQueueERC721.renounceRole",

@@ -3,6 +3,7 @@ pragma solidity ^0.8.25;
 
 import {Script, console} from "forge-std/Script.sol";
 import {Dummy} from "../src/Dummy.sol";
+import {OracleReportRunner} from "../src/OracleReportRunner.sol";
 
 interface ILidoLocator {
     function accountingOracle() external view returns (address);
@@ -12,10 +13,12 @@ interface ILidoLocator {
 }
 
 /// @notice Anvil setup for the OrCa showcase (Lido v3, mainnet fork).
-///         Mirrors the impersonate/fund pattern from the PR-1570 setup so that
-///         `vm.broadcast(addr)` calls go through eth_sendTransaction without keys.
-///         Acts: user1/user2/attacker (Anvil defaults) + oracle_addr (real
-///         AccountingOracle proxy from LidoLocator).
+///         - Impersonates the AccountingOracle proxy + funds it.
+///         - Funds three Anvil-default users.
+///         - Replaces the AccountingOracle's runtime bytecode with
+///           OracleReportRunner via anvil_setCode so that the helper passes
+///           Accounting.handleOracleReport's `msg.sender == accountingOracle`
+///           check while exposing a fuzzer-friendly `report(...)` entrypoint.
 contract DeploySetup is Script {
     address constant LIDO_LOCATOR = 0xC1d0b3DE6792Bf6b4b37EccdcC24e45978Cfd2Eb;
 
@@ -37,12 +40,22 @@ contract DeploySetup is Script {
         _impersonateAndFund(USER2,    _ANVIL_USER_BALANCE_WEI_HEX);
         _impersonateAndFund(ATTACKER, _ANVIL_USER_BALANCE_WEI_HEX);
 
-        // Empty user runtime code so tx senders are clean EOAs.
         _clearCode(USER1);
         _clearCode(USER2);
         _clearCode(ATTACKER);
 
-        // Make sure forge-script sees at least one deployment, otherwise it errors.
+        // Overlay AccountingOracle's runtime with OracleReportRunner.
+        bytes memory rt = vm.getDeployedCode("OracleReportRunner.sol:OracleReportRunner");
+        require(rt.length > 0, "DeploySetup: OracleReportRunner artifact missing");
+        _setCode(oracleAddr, rt);
+        console.log("Installed OracleReportRunner at AO, runtime bytes:", rt.length);
+
+        // Sanity: confirm overlay is reachable through the locator.
+        OracleReportRunner runner = OracleReportRunner(oracleAddr);
+        uint256 refSlot = runner.getLastProcessingRefSlot();
+        console.log("OracleReportRunner.getLastProcessingRefSlot() ->", refSlot);
+
+        // Forge requires at least one deployment in the broadcast.
         vm.broadcast(USER1);
         Dummy d = new Dummy();
         console.log("Dummy deployed at:", address(d));
@@ -58,5 +71,11 @@ contract DeploySetup is Script {
     function _clearCode(address a) private {
         string memory addrJson = string.concat('"', vm.toString(a), '"');
         vm.rpc("anvil_setCode", string.concat("[", addrJson, ",", '"0x"', "]"));
+    }
+
+    function _setCode(address a, bytes memory code) private {
+        string memory addrJson = string.concat('"', vm.toString(a), '"');
+        string memory codeHex = vm.toString(code);
+        vm.rpc("anvil_setCode", string.concat("[", addrJson, ",", '"', codeHex, '"', "]"));
     }
 }
