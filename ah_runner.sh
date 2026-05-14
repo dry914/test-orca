@@ -17,7 +17,7 @@ set -e
 source .env
 
 # Path to `ah` binary. May not be necessary if `ah` is already in the PATH.
-AH="PATH_TO_AH_BINARY/ah" # e.g. "/home/user/.local/bin/ah"
+AH="ah" # resolved via $PATH; requires `source .venv/bin/activate` before running
 
 #######################################################################################
 # OrCa task configuration values (may change based on particular run/use case)
@@ -32,11 +32,11 @@ FUZZ_TARGETS_PATH="orca-fuzzing-targets.json" # Format from AuditHub export. Set
 FUZZ_BLACKLIST_PATH="orca-fuzzing-blacklist.json" # Format from AuditHub export. Set to "null" if not using.
 
 # Fuzzing parameters: Update these as desired
-TIMEOUT="1800" # Timeout in seconds for the OrCa task (1800s = 30min, comfortable first-run budget)
+TIMEOUT="600" # Timeout in seconds for the OrCa task (600s = 10min, room for finalize cycle)
 DETECT_REENTRANCY="false" # Whether to enable OrCa's reentrancy detection feature
 FUZZ_PURE="false" # Whether to enable fuzzing of pure/view functions
 FORK_NETWORK="mainnet" # Network to fork for fuzzing (e.g. "mainnet"). Leave empty to not fork.
-FORK_BLOCK_NUMBER="null" # Block number to fork from. Set to "null" to fork from the latest block or if no forking selected.
+FORK_BLOCK_NUMBER="25088391" # Pinned to the block at which task 2675 ran cleanly (5084/5084 OracleReport OK). Use "null" for latest.
 LOG_LEVEL="DEBUG" # Log level for `ah` commands (e.g. "debug", "info", "warning", "error")
 
 # These are exported because they are read by the `ah` command as environment variables

@@ -1,23 +1,30 @@
 # Showcase fuzzing surface (paired with specs/spec_01..03.spec).
 #
-# `oracle_addr` is bound to the AccountingOracle proxy
-# (0x852dEd011285fe67063a08005c71a85690503Cee). After setup that address holds
-# OracleReportRunner's runtime bytecode (anvil_setCode), so calling
-# `oracleRunner.report(...)` from `oracle_addr` itself satisfies the
-# `msg.sender == accountingOracle` access check inside Accounting.
+# OracleReportRunner runtime is installed at the AccountingOracle proxy
+# address (0x852dEd…) via anvil_setCode in script/OrCa.s.sol. The fuzzer
+# calls `oracleRunner.report(...)` as any regular EOA user — the call lands
+# on the AO address, and when the runner forwards to
+# Accounting.handleOracleReport, `msg.sender` is address(this) = AO, so the
+# `msg.sender == accountingOracle` check inside Accounting passes naturally.
+# We deliberately do NOT add AO to the user list: EIP-3607 forbids tx senders
+# with deployed code.
 #
-# OracleReportRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint)
-# clamps every input to ranges the OracleReportSanityChecker accepts and pulls
-# the rest of the report fields (timestamp, validators, vault balances, batches,
-# simulatedShareRate) from live state — so any hint values land on a
-# non-reverting code path while still letting share rate move between calls.
+# OracleReportRunnerImpl.report(timeElapsedHint, clBalanceIncreaseHint,
+#   sharesRequestedToBurnHint) clamps every input to ranges the
+# OracleReportSanityChecker accepts and pulls the rest of the report fields
+# (timestamp, validators, vault balances, batches, simulatedShareRate) from
+# live state — any hint values land on a non-reverting code path while still
+# letting share rate move between calls.
+#
+# Open question: `simulatedShareRate` is now derived inside the runner via
+# `Accounting.simulateOracleReport` + (postTotalPooledEther * 1e27 /
+# postTotalShares); see comments in src/OracleReportRunner.sol.
 
 vars: Lido lido,
       WithdrawalQueueERC721 wq,
       OracleReportRunner oracleRunner,
       address user1, address user2,
-      address attacker,
-      address oracle_addr
+      address attacker
 
 hints:
     finished(lido.submit(_referral),
@@ -29,22 +36,24 @@ hints:
     finished(wq.requestWithdrawals(_amounts, _owner),
         sender   := choose_rand([user1, user2]);
         _owner   := sender;
-        _amounts := [rand_int(100, 1000000000000000000000)]
+        _amounts := [rand_int(1000000000, 100000000000000000000)]   # 1 gwei .. 100 ETH (within WQ MIN/MAX)
     ) ;
 
     finished(oracleRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint),
-        sender                       := oracle_addr;
+        sender                       := choose_rand([user1, user2, attacker]);
         timeElapsedHint              := rand_int(3600, 604800);                    # 1h .. 7d
         clBalanceIncreaseHint        := rand_int(0, 1000000000000000000000000);    # 0 .. 1M ETH (clamped inside helper)
         sharesRequestedToBurnHint    := 0
     ) ;
 
     finished(wq.claimWithdrawal(_requestId),
-        sender := choose_rand([user1, user2, attacker])
+        sender     := choose_rand([user1, user2, attacker]);
+        _requestId := rand_int(1, 100000)
     ) ;
 
     finished(wq.transferFrom(_from, _to, _requestId),
-        sender := _from;
-        _from  := choose_rand([user1, user2]);
-        _to    := choose_rand([user1, user2, attacker])
+        sender     := _from;
+        _from      := choose_rand([user1, user2]);
+        _to        := choose_rand([user1, user2, attacker]);
+        _requestId := rand_int(1, 100000)
     )

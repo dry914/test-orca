@@ -88,7 +88,29 @@ interface IWithdrawalQueue {
     ) external view returns (BatchesCalculationState memory);
 }
 
-contract OracleReportRunner {
+/// No-op stand-in for the on-chain TokenRateNotifier
+/// (PostTokenRebaseReceiver behind LidoLocator). The real contract iterates L2
+/// rate-pushers (Arbitrum/Optimism bridges), and at least one of them reverts
+/// with empty data on a forked chain — which TokenRateNotifier propagates as
+/// `ErrorTokenRateNotifierRevertedWithNoData()`. Accounting does not wrap
+/// `_notifyRebaseObserver` in try/catch, so any failure there aborts the whole
+/// report. We overlay this no-op at the notifier address in script/OrCa.s.sol
+/// to disable the observer pipeline entirely for fuzzing.
+contract NoopRebaseReceiver {
+    function handlePostTokenRebase(
+        uint256, uint256, uint256, uint256, uint256, uint256, uint256
+    ) external pure {}
+}
+
+/// Renamed from `OracleReportRunner` to avoid a name collision with the entry in
+/// `onchain.deployment.json` (which uses `OracleReportRunner` for the address
+/// 0x852dEd… overlay). AuditHub's ABI extraction merges contracts by name, so two
+/// `OracleReportRunner`s — one from foundry artifacts and one from the deployment
+/// file — make OrCa fail with `Found 2 contracts with the name 'OracleReportRunner',
+/// expected 1.` Renaming this implementation contract is enough; selectors stay
+/// identical, so the bytecode installed via anvil_setCode still serves the
+/// `OracleReportRunner` ABI declared in the deployment file.
+contract OracleReportRunnerImpl {
     ILidoLocator constant LOCATOR = ILidoLocator(0xC1d0b3DE6792Bf6b4b37EccdcC24e45978Cfd2Eb);
 
     /// @dev Conservative annualized growth cap for CL balance (5% APR-equivalent),
@@ -144,10 +166,17 @@ contract OracleReportRunner {
             withdrawalFinalizationBatches: new uint256[](0),
             simulatedShareRate: 0
         });
-        CalculatedValues memory v = accounting.simulateOracleReport(r);
+        CalculatedValues memory v;
+        try accounting.simulateOracleReport(r) returns (CalculatedValues memory _v) {
+            v = _v;
+        } catch Error(string memory reason) {
+            revert(string.concat("runner:simulate:", reason));
+        } catch (bytes memory data) {
+            revert(string.concat("runner:simulate:sel:", _selPrefix(data)));
+        }
 
         // STEP 2: simulatedShareRate = postTotalPooledEther * 1e27 / postTotalShares
-        require(v.postTotalShares > 0, "OracleReportRunner: zero shares");
+        require(v.postTotalShares > 0, "runner:zero shares");
         uint256 rate = (v.postTotalPooledEther * 1e27) / v.postTotalShares;
 
         // STEP 3: ask WQ to compute finalization batches (only if anything is queued)
@@ -156,7 +185,28 @@ contract OracleReportRunner {
         // STEP 4: actual report
         r.withdrawalFinalizationBatches = batches;
         r.simulatedShareRate = rate;
-        accounting.handleOracleReport(r);
+        try accounting.handleOracleReport(r) {}
+        catch Error(string memory reason) {
+            revert(string.concat("runner:handle:", reason));
+        } catch (bytes memory data) {
+            revert(string.concat("runner:handle:sel:", _selPrefix(data)));
+        }
+    }
+
+    /// @dev Format the first 4 bytes of revert data as "0xabcdef12" so we can
+    ///      identify a custom-error selector from the metrics output.
+    function _selPrefix(bytes memory data) private pure returns (string memory) {
+        if (data.length < 4) return "empty";
+        bytes memory chars = "0123456789abcdef";
+        bytes memory out = new bytes(10);
+        out[0] = bytes1("0");
+        out[1] = bytes1("x");
+        for (uint256 i = 0; i < 4; i++) {
+            uint8 b = uint8(data[i]);
+            out[2 + i * 2]     = chars[b >> 4];
+            out[2 + i * 2 + 1] = chars[b & 0x0f];
+        }
+        return string(out);
     }
 
     function _calculateBatches(

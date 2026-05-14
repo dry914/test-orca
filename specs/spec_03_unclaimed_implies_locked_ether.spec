@@ -1,21 +1,26 @@
-# Pillar 3 — State implication without enumeration.
+# Pillar 3 — State implication without enumeration (free variable form).
 #
-# If any finalized-but-unclaimed request exists, the queue's locked ether
-# must be positive. The free variable `reqId` lets the SMT solver hunt for
-# a violating valuation directly: solver finds the witness, no manual scan.
+# Original PDF intent:
+#   if any finalized-but-unclaimed request exists, locked ether must be positive.
 #
-# Solvency-adjacent property: a violation would mean either `lockedEther`
-# was decremented incorrectly during claim, or `finalize` raised the
-# frontier without locking ether — both real bug classes.
+# Encoding caveat — first iteration:
+#   The "is this request claimed?" predicate sits in WithdrawalQueueBase's
+#   private `queue` storage; only the public `getWithdrawalStatus(uint256[])`
+#   getter exposes the `isClaimed` flag (index 5 of WithdrawalRequestStatus),
+#   and it takes an array argument. Once we either (a) wire a `WQView.isClaimed`
+#   helper view or (b) confirm [V] supports array-literal arguments to view
+#   calls + double indexing, the precondition should become
+#       !wq.getWithdrawalStatus([reqId])[0][5]
+#   (or `!wqView.isClaimed(reqId)`).
 #
-# Foundry equivalent: scan the queue every check to determine whether any
-# claimable request exists, then assert. Gas-bounded queue depth in tests,
-# and the assertion is structurally awkward — existence-check followed by
-# a global property — in a language designed for unit tests.
+# For now we keep the free-variable witness search but drop the `!claimed`
+# leg — the spec is weaker (it triggers on ANY finalized id, not just
+# unclaimed ones), but it preserves the pillar-3 mechanic and parses cleanly.
+#
+# Derived from: contracts/0.8.9/WithdrawalQueueBase.sol — getLastFinalizedRequestId,
+# getLockedEtherAmount.
 
 vars: WithdrawalQueueERC721 wq, uint256 reqId
 
-inv: (reqId > 0
-      && reqId <= wq.getLastFinalizedRequestId()
-      && !wq.queue(reqId)[5])
+inv: (reqId > 0 && reqId <= wq.getLastFinalizedRequestId())
      ==> wq.getLockedEtherAmount() > 0

@@ -3,13 +3,22 @@ pragma solidity ^0.8.25;
 
 import {Script, console} from "forge-std/Script.sol";
 import {Dummy} from "../src/Dummy.sol";
-import {OracleReportRunner} from "../src/OracleReportRunner.sol";
+import {OracleReportRunnerImpl, NoopRebaseReceiver} from "../src/OracleReportRunner.sol";
 
 interface ILidoLocator {
     function accountingOracle() external view returns (address);
     function accounting() external view returns (address);
     function lido() external view returns (address);
     function withdrawalQueue() external view returns (address);
+    function postTokenRebaseReceiver() external view returns (address);
+}
+
+interface ILidoERC20 {
+    function approve(address _spender, uint256 _amount) external returns (bool);
+}
+
+interface ILidoStaking {
+    function submit(address _referral) external payable returns (uint256);
 }
 
 /// @notice Anvil setup for the OrCa showcase (Lido v3, mainnet fork).
@@ -45,20 +54,57 @@ contract DeploySetup is Script {
         _clearCode(ATTACKER);
 
         // Overlay AccountingOracle's runtime with OracleReportRunner.
-        bytes memory rt = vm.getDeployedCode("OracleReportRunner.sol:OracleReportRunner");
-        require(rt.length > 0, "DeploySetup: OracleReportRunner artifact missing");
+        bytes memory rt = vm.getDeployedCode("OracleReportRunner.sol:OracleReportRunnerImpl");
+        require(rt.length > 0, "DeploySetup: OracleReportRunnerImpl artifact missing");
         _setCode(oracleAddr, rt);
-        console.log("Installed OracleReportRunner at AO, runtime bytes:", rt.length);
+        console.log("Installed OracleReportRunnerImpl at AO, runtime bytes:", rt.length);
 
         // Sanity: confirm overlay is reachable through the locator.
-        OracleReportRunner runner = OracleReportRunner(oracleAddr);
+        OracleReportRunnerImpl runner = OracleReportRunnerImpl(oracleAddr);
         uint256 refSlot = runner.getLastProcessingRefSlot();
         console.log("OracleReportRunner.getLastProcessingRefSlot() ->", refSlot);
+
+        // Disable the L2 token-rate observer pipeline. The real TokenRateNotifier
+        // reverts with empty data on a forked chain (L2 bridges' state is not
+        // realistic), and Accounting does not wrap that call in try/catch.
+        address notifier = ILidoLocator(LIDO_LOCATOR).postTokenRebaseReceiver();
+        if (notifier != address(0)) {
+            bytes memory noopRt = vm.getDeployedCode("OracleReportRunner.sol:NoopRebaseReceiver");
+            require(noopRt.length > 0, "DeploySetup: NoopRebaseReceiver artifact missing");
+            _setCode(notifier, noopRt);
+            console.log("Installed NoopRebaseReceiver at", notifier, "bytes:", noopRt.length);
+        }
+
+        // wq.requestWithdrawals does a transferFrom on stETH from msg.sender ->
+        // each user must pre-approve WQ for an unlimited stETH allowance.
+        _approveWQForUser(USER1);
+        _approveWQForUser(USER2);
+        _approveWQForUser(ATTACKER);
+
+        // Pre-fund every user with a large stETH balance so the fuzzer doesn't
+        // immediately hit BALANCE_EXCEEDED on requestWithdrawals. 100 ether each
+        // is well within Lido's daily staking limit (~150k ETH).
+        _seedStETH(USER1, 100 ether);
+        _seedStETH(USER2, 100 ether);
+        _seedStETH(ATTACKER, 100 ether);
 
         // Forge requires at least one deployment in the broadcast.
         vm.broadcast(USER1);
         Dummy d = new Dummy();
         console.log("Dummy deployed at:", address(d));
+    }
+
+    function _approveWQForUser(address user) private {
+        address lido = ILidoLocator(LIDO_LOCATOR).lido();
+        address wq = ILidoLocator(LIDO_LOCATOR).withdrawalQueue();
+        vm.broadcast(user);
+        ILidoERC20(lido).approve(wq, type(uint256).max);
+    }
+
+    function _seedStETH(address user, uint256 amount) private {
+        address lido = ILidoLocator(LIDO_LOCATOR).lido();
+        vm.broadcast(user);
+        ILidoStaking(lido).submit{value: amount}(address(0));
     }
 
     function _impersonateAndFund(address a, string memory balanceHex) private {
