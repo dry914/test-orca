@@ -1,7 +1,7 @@
 {
-  "fuzzing_start_time": 1778758465.4596322,
-  "total_transactions_issued": 69083,
-  "total_fuzzing_duration": 600.0091063976288,
+  "fuzzing_start_time": 1778777099.378606,
+  "total_transactions_issued": 8621,
+  "total_fuzzing_duration": 120.07724165916443,
   "contract_fuzzing_information": {
     "CommonBase": {
       "contract_name": "CommonBase",
@@ -5853,18 +5853,18 @@
         },
         "submit(address)": {
           "function_signature": "submit(address)",
-          "successful_calls": 13672,
-          "reverted_calls": 148,
+          "successful_calls": 1696,
+          "reverted_calls": 18,
           "max_gas_used": 76862,
           "emitted_events": {
-            "Submitted": 13672,
-            "Transfer": 13672,
-            "TransferShares": 13672
+            "Submitted": 1696,
+            "Transfer": 1696,
+            "TransferShares": 1696
           },
           "error_strings": {
-            "Error(ZERO_DEPOSIT)": 148
+            "Error(ZERO_DEPOSIT)": 18
           },
-          "total_calls": 13820
+          "total_calls": 1714
         },
         "decreaseAllowance(address,uint256)": {
           "function_signature": "decreaseAllowance(address,uint256)",
@@ -5930,7 +5930,7 @@
           "total_calls": 0
         }
       },
-      "total_calls": 13820,
+      "total_calls": 1714,
       "functions": [
         {
           "total_calls": 0,
@@ -6133,17 +6133,17 @@
           "error_strings": {}
         },
         {
-          "total_calls": 13820,
-          "successful_calls": 13672,
+          "total_calls": 1714,
+          "successful_calls": 1696,
           "function_name": "submit(address)",
           "max_gas_used": 76862,
           "emitted_events": {
-            "Submitted": 13672,
-            "Transfer": 13672,
-            "TransferShares": 13672
+            "Submitted": 1696,
+            "Transfer": 1696,
+            "TransferShares": 1696
           },
           "error_strings": {
-            "Error(ZERO_DEPOSIT)": 148
+            "Error(ZERO_DEPOSIT)": 18
           }
         },
         {
@@ -6236,13 +6236,13 @@
         "claimWithdrawal(uint256)": {
           "function_signature": "claimWithdrawal(uint256)",
           "successful_calls": 0,
-          "reverted_calls": 13898,
+          "reverted_calls": 1729,
           "max_gas_used": 0,
           "emitted_events": {},
           "error_strings": {
-            "UnrecognizedError(bytes)": 13898
+            "UnrecognizedError(bytes)": 1729
           },
-          "total_calls": 13898
+          "total_calls": 1729
         },
         "claimWithdrawals(uint256[],uint256[])": {
           "function_signature": "claimWithdrawals(uint256[],uint256[])",
@@ -6327,19 +6327,19 @@
         },
         "requestWithdrawals(uint256[],address)": {
           "function_signature": "requestWithdrawals(uint256[],address)",
-          "successful_calls": 2372,
-          "reverted_calls": 11322,
-          "max_gas_used": 672487,
+          "successful_calls": 315,
+          "reverted_calls": 1417,
+          "max_gas_used": 558114,
           "emitted_events": {
-            "Transfer": 9676,
-            "TransferShares": 4838,
-            "WithdrawalRequested": 4838
+            "Transfer": 1228,
+            "TransferShares": 614,
+            "WithdrawalRequested": 614
           },
           "error_strings": {
-            "UnrecognizedError(bytes)": 11102,
-            "Error(BALANCE_EXCEEDED)": 220
+            "UnrecognizedError(bytes)": 1401,
+            "Error(BALANCE_EXCEEDED)": 16
           },
-          "total_calls": 13694
+          "total_calls": 1732
         },
         "requestWithdrawalsWithPermit(uint256[],address,(uint256,uint256,uint8,bytes32,bytes32))": {
           "function_signature": "requestWithdrawalsWithPermit(uint256[],address,(uint256,uint256,uint8,bytes32,bytes32))",
@@ -6434,16 +6434,16 @@
         "transferFrom(address,address,uint256)": {
           "function_signature": "transferFrom(address,address,uint256)",
           "successful_calls": 0,
-          "reverted_calls": 13856,
+          "reverted_calls": 1692,
           "max_gas_used": 0,
           "emitted_events": {},
           "error_strings": {
-            "UnrecognizedError(bytes)": 13856
+            "UnrecognizedError(bytes)": 1692
           },
-          "total_calls": 13856
+          "total_calls": 1692
         }
       },
-      "total_calls": 41448,
+      "total_calls": 5153,
       "functions": [
         {
           "total_calls": 0,
@@ -6454,13 +6454,13 @@
           "error_strings": {}
         },
         {
-          "total_calls": 13898,
+          "total_calls": 1729,
           "successful_calls": 0,
           "function_name": "claimWithdrawal(uint256)",
           "max_gas_used": 0,
           "emitted_events": {},
           "error_strings": {
-            "UnrecognizedError(bytes)": 13898
+            "UnrecognizedError(bytes)": 1729
           }
         },
         {
@@ -6536,18 +6536,18 @@
           "error_strings": {}
         },
         {
-          "total_calls": 13694,
-          "successful_calls": 2372,
+          "total_calls": 1732,
+          "successful_calls": 315,
           "function_name": "requestWithdrawals(uint256[],address)",
-          "max_gas_used": 672487,
+          "max_gas_used": 558114,
           "emitted_events": {
-            "Transfer": 9676,
-            "TransferShares": 4838,
-            "WithdrawalRequested": 4838
+            "Transfer": 1228,
+            "TransferShares": 614,
+            "WithdrawalRequested": 614
           },
           "error_strings": {
-            "UnrecognizedError(bytes)": 11102,
-            "Error(BALANCE_EXCEEDED)": 220
+            "UnrecognizedError(bytes)": 1401,
+            "Error(BALANCE_EXCEEDED)": 16
           }
         },
         {
@@ -6631,13 +6631,13 @@
           "error_strings": {}
         },
         {
-          "total_calls": 13856,
+          "total_calls": 1692,
           "successful_calls": 0,
           "function_name": "transferFrom(address,address,uint256)",
           "max_gas_used": 0,
           "emitted_events": {},
           "error_strings": {
-            "UnrecognizedError(bytes)": 13856
+            "UnrecognizedError(bytes)": 1692
           }
         }
       ]
@@ -6653,43 +6653,43 @@
       "function_fuzzing_information": {
         "report(uint256,uint256,uint256)": {
           "function_signature": "report(uint256,uint256,uint256)",
-          "successful_calls": 13815,
+          "successful_calls": 1754,
           "reverted_calls": 0,
-          "max_gas_used": 727801,
+          "max_gas_used": 727609,
           "emitted_events": {
-            "CLValidatorsUpdated": 13815,
-            "ELRewardsReceived": 1491,
-            "WithdrawalsReceived": 1538,
-            "ETHDistributed": 13815,
-            "Transfer": 65647,
-            "TransferShares": 65647,
-            "UnrecognizedContract[0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5]": 11009,
-            "UnrecognizedContract[0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433]": 10580,
-            "TokenRebased": 13815,
-            "InternalShareRateUpdated": 13815
+            "CLValidatorsUpdated": 1754,
+            "ELRewardsReceived": 187,
+            "WithdrawalsReceived": 194,
+            "ETHDistributed": 1754,
+            "Transfer": 8322,
+            "TransferShares": 8322,
+            "UnrecognizedContract[0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5]": 1404,
+            "UnrecognizedContract[0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433]": 1342,
+            "TokenRebased": 1754,
+            "InternalShareRateUpdated": 1754
           },
           "error_strings": {},
-          "total_calls": 13815
+          "total_calls": 1754
         }
       },
-      "total_calls": 13815,
+      "total_calls": 1754,
       "functions": [
         {
-          "total_calls": 13815,
-          "successful_calls": 13815,
+          "total_calls": 1754,
+          "successful_calls": 1754,
           "function_name": "report(uint256,uint256,uint256)",
-          "max_gas_used": 727801,
+          "max_gas_used": 727609,
           "emitted_events": {
-            "CLValidatorsUpdated": 13815,
-            "ELRewardsReceived": 1491,
-            "WithdrawalsReceived": 1538,
-            "ETHDistributed": 13815,
-            "Transfer": 65647,
-            "TransferShares": 65647,
-            "UnrecognizedContract[0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5]": 11009,
-            "UnrecognizedContract[0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433]": 10580,
-            "TokenRebased": 13815,
-            "InternalShareRateUpdated": 13815
+            "CLValidatorsUpdated": 1754,
+            "ELRewardsReceived": 187,
+            "WithdrawalsReceived": 194,
+            "ETHDistributed": 1754,
+            "Transfer": 8322,
+            "TransferShares": 8322,
+            "UnrecognizedContract[0x55032650b14df07b85bF18A3a3eC8E0Af2e028d5]": 1404,
+            "UnrecognizedContract[0xaE7B191A31f627b4eB1d4DaC64eaB9976995b433]": 1342,
+            "TokenRebased": 1754,
+            "InternalShareRateUpdated": 1754
           },
           "error_strings": {}
         }
@@ -6699,8 +6699,8 @@
   "file_fuzzing_information": {},
   "v_specs_fuzzing_information": {
     "/workdir/workarea/specs/spec_01_liveness_under_fairness.spec": {
-      "successful_hits": 69083,
-      "hits": 69083,
+      "successful_hits": 8621,
+      "hits": 8621,
       "counterexample_info": null,
       "is_valid": true,
       "error_strings": {},
@@ -6710,8 +6710,8 @@
       }
     },
     "/workdir/workarea/specs/spec_03_unclaimed_implies_locked_ether.spec": {
-      "successful_hits": 69083,
-      "hits": 69083,
+      "successful_hits": 8621,
+      "hits": 8621,
       "counterexample_info": null,
       "is_valid": true,
       "error_strings": {},
@@ -6728,123 +6728,123 @@
         "file_path": "/workdir/workarea/hints/showcase.hint",
         "hint_str": "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(lido.submit(_referral), sender := choose_rand([user1, user2, attacker]); _referral := address(0); value := rand_int(100, 1000000000000000000000))",
         "is_valid": true,
-        "successful_applications": 2341,
-        "failed_applications": 4536,
+        "successful_applications": 303,
+        "failed_applications": 571,
         "error_strings": {
-          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 789,
-          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 803,
-          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 808,
-          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 710,
-          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 724,
-          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 702
+          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 119,
+          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 95,
+          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 99,
+          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 101,
+          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 78,
+          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 79
         },
         "identity": {
           "type": "version",
           "relative_path": "hints/showcase.hint"
         },
-        "total_applications": 6877
+        "total_applications": 874
       },
       "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(wq.requestWithdrawals(_amounts, _owner), sender := choose_rand([user1, user2]); _owner := sender; _amounts := [rand_int(1000000000, 100000000000000000000)])": {
         "function_signature": "wq.requestWithdrawals(_amounts, _owner)",
         "file_path": "/workdir/workarea/hints/showcase.hint",
         "hint_str": "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(wq.requestWithdrawals(_amounts, _owner), sender := choose_rand([user1, user2]); _owner := sender; _amounts := [rand_int(1000000000, 100000000000000000000)])",
         "is_valid": true,
-        "successful_applications": 2288,
-        "failed_applications": 4606,
+        "successful_applications": 293,
+        "failed_applications": 600,
         "error_strings": {
-          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 761,
-          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 777,
-          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 742,
-          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 751,
-          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 811,
-          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 764
+          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 105,
+          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 109,
+          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 108,
+          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 91,
+          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 94,
+          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 93
         },
         "identity": {
           "type": "version",
           "relative_path": "hints/showcase.hint"
         },
-        "total_applications": 6894
+        "total_applications": 893
       },
       "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(oracleRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint), sender := choose_rand([user1, user2, attacker]); timeElapsedHint := rand_int(3600, 604800); clBalanceIncreaseHint := rand_int(0, 1000000000000000000000000); sharesRequestedToBurnHint := 0)": {
         "function_signature": "oracleRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint)",
         "file_path": "/workdir/workarea/hints/showcase.hint",
         "hint_str": "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(oracleRunner.report(timeElapsedHint, clBalanceIncreaseHint, sharesRequestedToBurnHint), sender := choose_rand([user1, user2, attacker]); timeElapsedHint := rand_int(3600, 604800); clBalanceIncreaseHint := rand_int(0, 1000000000000000000000000); sharesRequestedToBurnHint := 0)",
         "is_valid": true,
-        "successful_applications": 2300,
-        "failed_applications": 4648,
+        "successful_applications": 276,
+        "failed_applications": 587,
         "error_strings": {
-          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 801,
-          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 726,
-          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 764,
-          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 788,
-          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 840,
-          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 729
+          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 89,
+          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 109,
+          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 99,
+          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 92,
+          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 109,
+          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 89
         },
         "identity": {
           "type": "version",
           "relative_path": "hints/showcase.hint"
         },
-        "total_applications": 6948
+        "total_applications": 863
       },
       "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(wq.claimWithdrawal(_requestId), sender := choose_rand([user1, user2, attacker]); _requestId := rand_int(1, 100000))": {
         "function_signature": "wq.claimWithdrawal(_requestId)",
         "file_path": "/workdir/workarea/hints/showcase.hint",
         "hint_str": "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(wq.claimWithdrawal(_requestId), sender := choose_rand([user1, user2, attacker]); _requestId := rand_int(1, 100000))",
         "is_valid": true,
-        "successful_applications": 2353,
-        "failed_applications": 4675,
+        "successful_applications": 305,
+        "failed_applications": 577,
         "error_strings": {
-          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 778,
-          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 791,
-          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 784,
-          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 764,
-          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 760,
-          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 798
+          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 107,
+          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 103,
+          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 102,
+          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 82,
+          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 92,
+          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 91
         },
         "identity": {
           "type": "version",
           "relative_path": "hints/showcase.hint"
         },
-        "total_applications": 7028
+        "total_applications": 882
       },
       "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(wq.transferFrom(_from, _to, _requestId), sender := _from; _from := choose_rand([user1, user2]); _to := choose_rand([user1, user2, attacker]); _requestId := rand_int(1, 100000))": {
         "function_signature": "wq.transferFrom(_from, _to, _requestId)",
         "file_path": "/workdir/workarea/hints/showcase.hint",
         "hint_str": "vars: Lido lido, WithdrawalQueueERC721 wq, OracleReportRunner oracleRunner, address user1, address user2, address attacker\nhints: finished(wq.transferFrom(_from, _to, _requestId), sender := _from; _from := choose_rand([user1, user2]); _to := choose_rand([user1, user2, attacker]); _requestId := rand_int(1, 100000))",
         "is_valid": true,
-        "successful_applications": 2090,
-        "failed_applications": 4861,
+        "successful_applications": 267,
+        "failed_applications": 591,
         "error_strings": {
-          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 687,
-          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 724,
-          "Assigned sender value '0x0000000000000000000000000000000000000000' is not an Anvil user address with balance, senders need to be valid user addresses.": 702,
-          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 643,
-          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 712,
-          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 678,
-          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 715
+          "Assigned sender value '0xc1d0b3de6792bf6b4b37eccdcc24e45978cfd2eb' is not an Anvil user address with balance, senders need to be valid user addresses.": 76,
+          "Assigned sender value '0xca12eaa7e0fe1fd09a301a10d16ee2beb70231ba' is not an Anvil user address with balance, senders need to be valid user addresses.": 101,
+          "Assigned sender value '0x0000000000000000000000000000000000000000' is not an Anvil user address with balance, senders need to be valid user addresses.": 72,
+          "Assigned sender value '0xae7ab96520de3a18e5e111b5eaab095312d7fe84' is not an Anvil user address with balance, senders need to be valid user addresses.": 77,
+          "Assigned sender value '0x889edc2edab5f40e902b864ad4d7ade8e412f9b1' is not an Anvil user address with balance, senders need to be valid user addresses.": 99,
+          "Assigned sender value '0x23ed611be0e1a820978875c0122f92260804cddf' is not an Anvil user address with balance, senders need to be valid user addresses.": 81,
+          "Assigned sender value '0x852ded011285fe67063a08005c71a85690503cee' is not an Anvil user address with balance, senders need to be valid user addresses.": 85
         },
         "identity": {
           "type": "version",
           "relative_path": "hints/showcase.hint"
         },
-        "total_applications": 6951
+        "total_applications": 858
       }
     }
   },
   "function_sequence_histogram": {
     "1": 3,
     "2": 8,
-    "3": 21,
-    "4": 54,
-    "5": 112,
-    "6": 163,
-    "7": 206,
-    "8": 219,
-    "9": 231
+    "3": 20,
+    "4": 42,
+    "5": 83,
+    "6": 114,
+    "7": 146,
+    "8": 178,
+    "9": 199
   },
   "instructions_hit": 22068,
   "instructions_total": 9348,
   "max_corpus_size": 2501,
-  "unique_equivalence_classes": 991,
+  "unique_equivalence_classes": 439,
   "version": "1.6.3"
 }
